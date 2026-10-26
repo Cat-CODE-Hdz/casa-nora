@@ -1,16 +1,35 @@
-# React + Vite
+# CASA NORA
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Demo conceptual desarrollada para el portafolio de CAT CODE.
 
-Currently, two official plugins are available:
+## Package
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+CUSTOM Pro · 249 € + 29 €/mes · ★ MÁS ELEGIDO
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React
 
-## Expanding the Oxlint configuration
+Vite
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+CSS
+
+## Features
+
+Responsive
+
+SEO
+
+Reservation Form (demo del extra)
+
+Gallery
+
+FAQ
+
+WhatsApp CTA
+
+## Demo
+
+Proyecto conceptual. No representa a un cliente real, no envía datos ni reserva disponibilidad.
+
+El número de WhatsApp se configura en `.env` (`VITE_WHATSAPP_DEMO_NUMBER`). Con `VITE_DEMO_MODE=true` o número vacío, los CTA muestran el estado demo.
