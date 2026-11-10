@@ -1,7 +1,7 @@
 export const DEMO_MODE = import.meta.env.VITE_DEMO_MODE !== 'false'
 export const WHATSAPP_DEMO_NUMBER = import.meta.env.VITE_WHATSAPP_DEMO_NUMBER || ''
 
-export const WHATSAPP_MSG = 'Hola 👋\n\nMe gustaría recibir más información sobre Casa Nora.'
+export const WHATSAPP_MSG = 'Hola, me gustaría reservar una mesa en Casa Nora.'
 
 export function createWhatsAppUrl(message = WHATSAPP_MSG) {
   const number = WHATSAPP_DEMO_NUMBER.replace(/\D/g, '')
