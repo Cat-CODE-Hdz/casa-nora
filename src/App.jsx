@@ -1,8 +1,16 @@
 import { useState } from 'react'
-import { createWhatsAppUrl, WHATSAPP_MSG } from './lib/whatsapp'
+import { createWhatsAppUrl, WHATSAPP_MSG, DEMO_MODE } from './lib/whatsapp'
 
-const HERO_IMG =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBZXdTAiPJd9q2LBEXXK6gDn9kZ3_srRuiFbLZLyEtIrpSV9v2m2TgHyM3NVEC_vQYe3oTq5-rEJiYKbJKHPYmPSg-ZzPNmLFjrbDM8PVCH4iNppX0fhpbc_MvyXdTLbRIAuSgMH-Z_GqlGg0cT9BwVGtaqfwvm1F38VbfqEWNBFMgiN1B1lk5Eyrx6ngpNQzDeKUz2rICS9Zbu6EpXSM8sXg9tzqKPIOhP-vXWmekFvdeQVn3xTi82'
+const asset = (path) => `${import.meta.env.BASE_URL}${path}?v=real-4`
+const HERO_IMG = asset('images/hero/hero-desktop.webp')
+const HERO_MOBILE = asset('images/hero/hero-mobile.webp')
+const ABOUT_KITCHEN = asset('images/about/kitchen.webp')
+const ABOUT_CHEF = asset('images/about/chef.webp')
+const EXPERIENCE_IMG = asset('images/experience/table.webp')
+
+const hideOnError = (event) => {
+  event.currentTarget.style.display = 'none'
+}
 
 const WA_TOOLTIP = 'Demo: el WhatsApp de Casa Nora no está conectado.'
 
@@ -27,38 +35,42 @@ const DISHES = [
     name: 'Burrata cremosa',
     desc: 'Tomate de temporada, albahaca fresca y aceite de oliva.',
     price: '16€',
+    img: asset('images/dishes/burrata.webp'),
   },
   {
     tag: 'Principal',
     name: 'Arroz meloso',
     desc: 'Setas de temporada, parmesano y hierbas frescas.',
     price: '22€',
+    img: asset('images/dishes/arroz-meloso.webp'),
   },
   {
     tag: 'Principal',
     name: 'Pescado del día',
     desc: 'Producto fresco, verduras y salsa de temporada.',
     price: '24€',
+    img: asset('images/dishes/pescado.webp'),
   },
   {
     tag: 'Postre',
     name: 'Tarta de queso',
     desc: 'Cremosa, suave y servida con frutos rojos.',
     price: '8€',
+    img: asset('images/dishes/cheesecake.webp'),
   },
 ]
 
 const EXPERIENCE_DATA = ['Producto local', 'Cocina de temporada', 'Madrid']
 
 const GALLERY = [
-  { num: '01', label: 'Restaurante exterior' },
-  { num: '02', label: 'Interior' },
-  { num: '03', label: 'Plato principal' },
-  { num: '04', label: 'Entrada' },
-  { num: '05', label: 'Postre' },
-  { num: '06', label: 'Cocina' },
-  { num: '07', label: 'Mesa' },
-  { num: '08', label: 'Detalles' },
+  { num: '01', label: 'Restaurante exterior', img: asset('images/gallery/gallery-01.webp') },
+  { num: '02', label: 'Interior', img: asset('images/gallery/gallery-02.webp') },
+  { num: '03', label: 'Plato principal', img: asset('images/gallery/gallery-03.webp') },
+  { num: '04', label: 'Entrada', img: asset('images/gallery/gallery-04.webp') },
+  { num: '05', label: 'Postre', img: asset('images/gallery/gallery-05.webp') },
+  { num: '06', label: 'Cocina', img: asset('images/gallery/gallery-06.webp') },
+  { num: '07', label: 'Mesa', img: asset('images/gallery/gallery-07.webp') },
+  { num: '08', label: 'Detalles', img: asset('images/gallery/gallery-08.webp') },
 ]
 
 const HOURS = [
@@ -70,23 +82,23 @@ const HOURS = [
 const SOURCING = [
   {
     num: '01',
-    title: 'Producto de proximidad',
-    text: 'Compramos producto local y de lo que está en su momento. Lo que no llega bien no entra en la carta.',
+    title: 'Selección y control',
+    text: 'Compramos producto local y revisamos cada partida al recibirla. Lo que no llega bien no entra en la carta.',
   },
   {
     num: '02',
-    title: 'Cocina de temporada',
-    text: 'La carta cambia con el mercado: si un ingrediente no está disponible, buscamos la mejor alternativa de la temporada.',
+    title: 'Cocina sin prisa',
+    text: 'Mise en place diaria, cocciones lentas y revisión del plato antes de que salga a la mesa.',
   },
   {
     num: '03',
-    title: 'El proceso',
-    text: 'Mise en place diaria, cocciones lentas y revisión del producto antes de que salga a la mesa.',
+    title: 'Revisión antes de servir',
+    text: 'Cada plato pasa por una última comprobación de punto, temperatura y presentación antes de llegar a tu mesa.',
   },
   {
     num: '04',
-    title: 'Si algo no está bien',
-    text: 'Si un plato no te convence, dínoslo en la mesa: lo retiramos y lo revisamos con el equipo de cocina.',
+    title: 'Garantía en mesa',
+    text: 'Si un plato no te convence, dínoslo en la mesa: lo retiramos sin coste y lo revisamos con el equipo de cocina.',
   },
 ]
 
@@ -199,7 +211,7 @@ function Hero({ onDemo }) {
     <section id="hero" className="hero">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <span className="badge-concept">Proyecto conceptual</span>
+          {DEMO_MODE && <span className="badge-concept">Proyecto conceptual</span>}
           <span className="hero-eyebrow">Casa Nora · Madrid</span>
           <h1 className="hero-title">
             Cocina mediterránea.
@@ -228,7 +240,10 @@ function Hero({ onDemo }) {
         </div>
 
         <figure className="hero-visual">
-          <img src={HERO_IMG} alt="Comedor de Casa Nora con mesas preparadas y luz cálida" onError={hideBrokenImage} />
+          <picture>
+            <source media="(max-width: 700px)" srcSet={HERO_MOBILE} />
+            <img src={HERO_IMG} alt="Comedor de Casa Nora con mesas preparadas y luz cálida" onError={hideBrokenImage} />
+          </picture>
           <figcaption>Mesa preparada · imagen de ambiente</figcaption>
         </figure>
       </div>
@@ -274,6 +289,17 @@ function About() {
           </aside>
         </div>
 
+        <div className="about-photos">
+          <figure className="about-photo">
+              <img src={ABOUT_KITCHEN} alt="Cocina de Casa Nora preparando producto de temporada" loading="lazy" onError={hideOnError} />
+            <figcaption>Cocina abierta · producto de temporada</figcaption>
+          </figure>
+          <figure className="about-photo about-photo-portrait">
+              <img src={ABOUT_CHEF} alt="Chef de Casa Nora en la cocina" loading="lazy" onError={hideOnError} />
+            <figcaption>Personaje de demo · CAT CODE</figcaption>
+          </figure>
+        </div>
+
         <div className="philosophy">
           <h2 className="section-title section-title-center">
             Lo que hacemos empieza en el producto.
@@ -309,6 +335,9 @@ function Dishes({ onDemo }) {
         <div className="dishes-grid">
           {DISHES.map((dish) => (
             <article className="dish-card" key={dish.name}>
+              <div className="dish-img">
+                <img src={dish.img} alt={`${dish.name} en Casa Nora`} loading="lazy" onError={hideOnError} />
+              </div>
               <span className="dish-tag">{dish.tag}</span>
               <h3 className="dish-name">{dish.name}</h3>
               <p className="dish-desc">{dish.desc}</p>
@@ -338,16 +367,28 @@ function Experience() {
         <div className="exp-copy">
           <span className="section-label">La experiencia</span>
           <h2 className="exp-title">
-            Una mesa.
+            Cómo reservamos,
             <br />
-            Una conversación.
-            <br />
-            Sin mirar el reloj.
+            cómo llegas al plato.
           </h2>
           <p className="section-desc">
             Casa Nora está pensada para disfrutar sin prisa. Una comida entre amigos, una cena
             especial o simplemente un momento para desconectar.
           </p>
+          <ol className="exp-process">
+            <li>
+              <strong>Reserva por WhatsApp.</strong> Escribes cuántos sois y cuándo. Te respondemos
+              con el hueco disponible, sin apps ni pasos de burocracia.
+            </li>
+            <li>
+              <strong>Confirmamos el día.</strong> La carta cambia con la temporada; te mandamos
+              lo que va a estar en tu mesa antes de llegar.
+            </li>
+            <li>
+              <strong>Llegas y comemos.</strong> Mesa preparada, tiempo real y sin cronómetro.
+              Si algo no está como lo imaginamos, lo remediamos ahí mismo, sin discutir.
+            </li>
+          </ol>
 
           <ul className="exp-data">
             {EXPERIENCE_DATA.map((item) => (
@@ -357,6 +398,7 @@ function Experience() {
         </div>
 
         <figure className="exp-visual">
+          <img src={EXPERIENCE_IMG} alt="Mesa preparada en el comedor de Casa Nora" loading="lazy" onError={hideOnError} />
           <figcaption>Ambientación · imagen de ambiente</figcaption>
         </figure>
       </div>
@@ -379,6 +421,7 @@ function Gallery() {
         <div className="gallery-grid">
           {GALLERY.map((item) => (
             <figure className="gallery-item" key={item.num}>
+              <img className="gallery-img" src={item.img} alt={`Casa Nora · ${item.label}`} loading="lazy" onError={hideOnError} />
               <span className="gallery-num">{item.num}</span>
               <figcaption className="gallery-cap">{item.label}</figcaption>
             </figure>
@@ -448,14 +491,14 @@ function Sourcing() {
       <div className="container src-grid">
         <div className="src-copy">
           <span className="section-label">Sección ampliada</span>
-          <h2 className="section-title">De dónde viene lo que comemos.</h2>
+          <h2 className="section-title">Cómo trabajamos y qué pasa si algo no sale bien.</h2>
           <p className="section-desc">
-            Antes de llegar a la mesa, cada producto ha pasado por varias manos. Te contamos cómo
-            trabajamos el origen, el proceso y qué ocurre si algo no sale como debe.
+            Antes de llegar a la mesa, cada plato pasa por un proceso claro. Te contamos cómo
+            seleccionamos, cómo cocinamos y qué hacemos si algo no está a la altura.
           </p>
           <p className="section-desc">
-            Preferimos enseñar el oficio antes que las cifras: cómo se cocina, con qué producto y
-            en qué plazo.
+            Preferimos enseñar el oficio antes que las cifras: revisión antes de servir y retirada
+            sin coste si un plato no te convence.
           </p>
         </div>
 
@@ -546,10 +589,26 @@ function Reservation() {
     setForm({ ...form, [name]: value })
   }
 
+  const fillExample = () => {
+    setForm({
+      nombre: 'Nombre de ejemplo',
+      email: 'nombre@ejemplo.com',
+      telefono: '600 000 000',
+      fecha: '2026-12-31',
+      hora: '21:00',
+      personas: '4',
+      mensaje: 'Mesa para 4, sin alergias. Reserva de ejemplo.',
+    })
+    setError('')
+    setStatus('idle')
+  }
+
   const validate = (values) => {
     if (!values.nombre.trim()) return 'Indica tu nombre.'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) return 'Introduce un email válido.'
-    if (!values.telefono.trim()) return 'Indica un teléfono de contacto.'
+    if (!/^[^\s@]+@ejemplo\.(com|es)$/i.test(values.email))
+      return 'Usa un correo de ejemplo (nombre@ejemplo.com).'
+    if (!/^6\d{2} \d{3} \d{3}$/.test(values.telefono.trim()))
+      return 'Introduce un teléfono con formato 6XX XXX XXX.'
     if (!values.fecha) return 'Indica la fecha.'
     if (!values.hora) return 'Indica la hora.'
     if (!values.personas) return 'Indica el número de personas.'
@@ -625,6 +684,10 @@ function Reservation() {
           ningún sitio ni comprueba disponibilidad.
         </div>
 
+        <button type="button" className="form-example" onClick={fillExample}>
+          Rellenar con datos de ejemplo →
+        </button>
+
         <form className="res-form" onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-field">
@@ -645,7 +708,9 @@ function Reservation() {
                 id="res-email"
                 name="email"
                 type="email"
-                placeholder="tu@email.com"
+                placeholder="nombre@ejemplo.com"
+                pattern="[^@\s]+@ejemplo\.(com|es)"
+                title="Usa un correo de ejemplo, p. ej. nombre@ejemplo.com"
                 value={form.email}
                 onChange={handleChange}
                 required
@@ -660,7 +725,9 @@ function Reservation() {
                 id="res-telefono"
                 name="telefono"
                 type="tel"
-                placeholder="600 000 000"
+                placeholder="6XX XXX XXX"
+                pattern="6[0-9]{2} [0-9]{3} [0-9]{3}"
+                title="Formato: 6XX XXX XXX"
                 value={form.telefono}
                 onChange={handleChange}
                 required
@@ -743,17 +810,18 @@ function Reservation() {
 
           {status === 'success' && (
             <div className="success-panel" role="status" id="demo-feedback">
-              <p className="success-title">¡Gracias!</p>
+              <p className="success-title">Simulación completada</p>
               <p>
-                Tu solicitud de reserva ha sido recibida.
+                Esto es una demostración.
                 <br />
-                Te contactaremos pronto.
+                Así se vería la confirmación si el formulario estuviera activo. No hemos recibido
+                nada.
               </p>
               <hr />
               <p className="success-demo">
                 <strong>DEMO CAT CODE</strong>
                 <br />
-                Esta es una demostración del sistema de reservas.
+                Ningún dato se ha enviado ni guardado.
               </p>
               <button type="button" className="btn-reset" onClick={resetForm}>
                 Rellenar otra vez →
@@ -779,7 +847,9 @@ function Footer({ onDemo }) {
               <br />
               de temporada.
             </p>
-            <span className="badge-concept badge-concept-dark">Proyecto conceptual</span>
+            {DEMO_MODE && (
+              <span className="badge-concept badge-concept-dark">Proyecto conceptual</span>
+            )}
           </div>
 
           <div className="footer-col">
@@ -862,7 +932,9 @@ function Footer({ onDemo }) {
 
         <div className="footer-bottom">
           <span>© 2026 Casa Nora</span>
-          <span className="footer-badge">Proyecto conceptual · Diseñado por CAT CODE</span>
+          {DEMO_MODE && (
+            <span className="footer-badge">Proyecto conceptual · Diseñado por CAT CODE</span>
+          )}
           <WhatsAppCta className="footer-wa" onDemo={onDemo}>
             <WhatsAppIcon className="btn-icon" />
             <span>Reservas por WhatsApp</span>
