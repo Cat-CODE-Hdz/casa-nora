@@ -49,7 +49,7 @@ const DISHES = [
     name: 'Pescado del día',
     desc: 'Producto fresco, verduras y salsa de temporada.',
     price: '24€',
-    img: asset('images/dishes/pescado.webp'),
+    img: asset('images/dishes/pescado.png'),
   },
   {
     tag: 'Postre',
